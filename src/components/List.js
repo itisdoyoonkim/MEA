@@ -1,0 +1,52 @@
+import React, { useContext } from "react";
+import { BudgetContext } from "../context/Context";
+import {
+  List as MUIList,
+  ListItem,
+  ListItemText,
+  ListItemSecondaryAction,
+  IconButton,
+  Slide,
+  Typography,
+} from "@material-ui/core";
+import { Delete } from "@material-ui/icons";
+
+const List = () => {
+  const { state, deleteExpense } = useContext(BudgetContext);
+
+  console.log(state);
+
+  if (state.monthlyExpenses.length === 0) {
+    return <Typography variant="body2">Nothing to show yet.</Typography>;
+  }
+
+  return (
+    <section>
+      <MUIList dense={true}>
+        {state.monthlyExpenses.map((expense) => (
+          <Slide
+            key={expense.id}
+            direction="down"
+            in
+            mountOnEnter
+            unmountOnExit
+          >
+            <ListItem>
+              <ListItemText
+                primary={expense.category}
+                secondary={`$ ${expense.amount}`}
+              />
+              <ListItemSecondaryAction>
+                <IconButton edge="end">
+                  <Delete onClick={() => deleteExpense(expense.id)} />
+                </IconButton>
+              </ListItemSecondaryAction>
+            </ListItem>
+          </Slide>
+        ))}
+      </MUIList>
+    </section>
+  );
+};
+
+export default List;
