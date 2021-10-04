@@ -22,7 +22,10 @@ const List = () => {
     };
   }, []);
 
-  if (state.monthlyExpenses.length === 0) {
+  if (
+    state.monthlyExpenses.length === 0 ||
+    localStorage.getItem("monthlyExpenses" === null)
+  ) {
     return <Typography variant="body2">Nothing to show yet.</Typography>;
   }
 

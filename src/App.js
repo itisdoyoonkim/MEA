@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useContext } from "react";
 import { Grid } from "@material-ui/core";
 import CustomCard from "./components/CustomCard";
 import Form from "./components/Form";
@@ -6,8 +6,28 @@ import List from "./components/List";
 import Totals from "./components/Totals";
 import Chart from "./components/Chart";
 import { colors } from "./constants/colors";
+import { BudgetContext } from "./context/Context";
 
 const App = () => {
+  const { getAllExpenses, getMonthlyIncome } = useContext(BudgetContext);
+
+  useEffect(() => {
+    if (localStorage.getItem("monthlyExpenses") === null) {
+      localStorage.setItem("monthlyExpenses", JSON.stringify([]));
+    }
+
+    if (localStorage.getItem("monthlyIncome") === null) {
+      localStorage.setItem("monthlyIncome", JSON.stringify(0));
+    }
+
+    getAllExpenses();
+    getMonthlyIncome();
+
+    return () => {
+      // cleanup
+    };
+  }, []);
+
   return (
     <main>
       <Grid
