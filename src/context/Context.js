@@ -2,7 +2,22 @@ import React, { useReducer, createContext } from "react";
 
 const reducer = (state, action) => {
   switch (action.type) {
+    case "GET_ALL_EXPENSES":
+      const monthlyExpenses = JSON.parse(
+        localStorage.getItem("monthlyExpenses")
+      );
+
+      return { ...state, monthlyExpenses };
+    case "GET_MONTHLY_INCOME":
+      const monthlyIncome = JSON.parse(localStorage.getItem("monthlyIncome"));
+
+      return { ...state, monthlyIncome };
     case "ADD_EXPENSE":
+      localStorage.setItem(
+        "monthlyExpenses",
+        JSON.stringify([...state.monthlyExpenses, action.payload])
+      );
+
       return {
         ...state,
         monthlyExpenses: [...state.monthlyExpenses, action.payload],
@@ -11,8 +26,16 @@ const reducer = (state, action) => {
       const newMonthlyExpenses = state.monthlyExpenses.filter((expense) => {
         return expense.id !== action.payload;
       });
+
+      localStorage.setItem(
+        "monthlyExpenses",
+        JSON.stringify(newMonthlyExpenses)
+      );
+
       return { ...state, monthlyExpenses: newMonthlyExpenses };
     case "UPDATE_MONTHLY_INCOME":
+      localStorage.setItem("monthlyIncome", JSON.stringify(action.payload));
+
       return { ...state, monthlyIncome: action.payload };
     default:
       return state;
@@ -21,62 +44,23 @@ const reducer = (state, action) => {
 
 const initState = {
   monthlyIncome: 0,
-  monthlyExpenses: [
-    {
-      id: 1,
-      category: "Rent",
-      amount: 1600,
-      color: `rgb(${Math.floor(Math.random() * 255)}, ${Math.floor(
-        Math.random() * 255
-      )}, ${Math.floor(Math.random() * 255)})`,
-    },
-    {
-      id: 2,
-      category: "Internet",
-      amount: 100,
-      color: `rgb(${Math.floor(Math.random() * 255)}, ${Math.floor(
-        Math.random() * 255
-      )}, ${Math.floor(Math.random() * 255)})`,
-    },
-    {
-      id: 3,
-      category: "Groceries",
-      amount: 500,
-      color: `rgb(${Math.floor(Math.random() * 255)}, ${Math.floor(
-        Math.random() * 255
-      )}, ${Math.floor(Math.random() * 255)})`,
-    },
-    {
-      id: 4,
-      category: "Pet Insurance",
-      amount: 30,
-      color: `rgb(${Math.floor(Math.random() * 255)}, ${Math.floor(
-        Math.random() * 255
-      )}, ${Math.floor(Math.random() * 255)})`,
-    },
-    {
-      id: 5,
-      category: "Donation",
-      amount: 50,
-      color: `rgb(${Math.floor(Math.random() * 255)}, ${Math.floor(
-        Math.random() * 255
-      )}, ${Math.floor(Math.random() * 255)})`,
-    },
-    {
-      id: 6,
-      category: "Dine out",
-      amount: 200,
-      color: `rgb(${Math.floor(Math.random() * 255)}, ${Math.floor(
-        Math.random() * 255
-      )}, ${Math.floor(Math.random() * 255)})`,
-    },
-  ],
+  monthlyExpenses: [],
 };
 
 export const BudgetContext = createContext(initState);
 
 export const Provider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initState);
+
+  const getMonthlyIncome = () => {
+    dispatch({ type: "GET_MONTHLY_INCOME" });
+  };
+
+  const getAllExpenses = () => {
+    dispatch({
+      type: "GET_ALL_EXPENSES",
+    });
+  };
 
   const addExpense = (expense) => {
     dispatch({
@@ -103,6 +87,8 @@ export const Provider = ({ children }) => {
     <BudgetContext.Provider
       value={{
         state,
+        getMonthlyIncome,
+        getAllExpenses,
         addExpense,
         deleteExpense,
         updateMonthlyIncome,

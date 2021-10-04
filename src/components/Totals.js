@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import {
   List as MUIList,
   ListItem,
@@ -10,9 +10,24 @@ import MonthlyIncomeForm from "./MonthlyIncomeForm";
 import { calculateTotalExpense } from "../utils";
 
 const Totals = () => {
-  const { state } = useContext(BudgetContext);
+  const { state, getMonthlyIncome } = useContext(BudgetContext);
+
+  useEffect(() => {
+    getMonthlyIncome();
+    return () => {
+      // cleanup
+    };
+  }, []);
 
   const totalExpense = calculateTotalExpense(state.monthlyExpenses);
+  const totalSaving = state.monthlyIncome - totalExpense;
+
+  let textColor;
+  if (totalExpense > state.monthlyIncome) {
+    textColor = "red";
+  } else {
+    textColor = "black";
+  }
 
   return (
     <section>
@@ -32,19 +47,31 @@ const Totals = () => {
             <ListItem>
               <ListItemText
                 primary="Monthly Income"
-                secondary={`$ ${state.monthlyIncome}`}
+                secondary={
+                  <span style={{ color: "black" }}>
+                    $ {state.monthlyIncome.toLocaleString()}
+                  </span>
+                }
               />
             </ListItem>
             <ListItem>
               <ListItemText
-                primary="Total monthly expense"
-                secondary={`$ ${totalExpense}`}
+                primary="Total Monthly Expense"
+                secondary={
+                  <span style={{ color: textColor }}>
+                    $ {totalExpense.toLocaleString()}
+                  </span>
+                }
               />
             </ListItem>
             <ListItem>
               <ListItemText
-                primary="Monthly saving"
-                secondary={`$ ${state.monthlyIncome - totalExpense}`}
+                primary="Monthly Saving"
+                secondary={
+                  <span style={{ color: "black" }}>
+                    $ {totalSaving.toLocaleString()}
+                  </span>
+                }
               />
             </ListItem>
           </MUIList>

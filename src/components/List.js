@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { BudgetContext } from "../context/Context";
 import {
   List as MUIList,
@@ -12,9 +12,15 @@ import {
 import { Delete } from "@material-ui/icons";
 
 const List = () => {
-  const { state, deleteExpense } = useContext(BudgetContext);
+  const { state, getAllExpenses, deleteExpense } = useContext(BudgetContext);
 
-  console.log(state);
+  useEffect(() => {
+    getAllExpenses();
+
+    return () => {
+      // cleanup
+    };
+  }, []);
 
   if (state.monthlyExpenses.length === 0) {
     return <Typography variant="body2">Nothing to show yet.</Typography>;
