@@ -1,10 +1,9 @@
-# To Add:
+# Motivation
 
-- Ability to add new category
-- Ability to edit expense
-- Notification when no category is selected
-- Save total expense, and compare with actual total expense (to add later). Draw out a line chart to compare these two values.
+Everyone needs to have an understanding of how much they are able to save on a monthly basis. This is a basis for financial planning.
 
-# Challenges:
+# How to test it out
 
-- Render unique colors in doughnut chart based on number of expenses
+Go to: https://github.com/itisdoyoonkim
+
+Alternatively, clone this repo.
