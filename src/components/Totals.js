@@ -4,6 +4,7 @@ import {
   ListItem,
   ListItemText,
   Grid,
+  Typography,
 } from "@material-ui/core";
 import { BudgetContext } from "../context/Context";
 import MonthlyIncomeForm from "./MonthlyIncomeForm";
@@ -77,6 +78,9 @@ const Totals = () => {
           </MUIList>
         </Grid>
       </Grid>
+      <Typography variant="body2">
+        *A negative number will be converted into a positive number.
+      </Typography>
     </section>
   );
 };

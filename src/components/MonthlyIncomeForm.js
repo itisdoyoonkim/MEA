@@ -1,5 +1,11 @@
 import React, { useState, useContext } from "react";
-import { TextField, Grid, Button, FormControl } from "@material-ui/core";
+import {
+  TextField,
+  Grid,
+  Button,
+  FormControl,
+  Typography,
+} from "@material-ui/core";
 import { BudgetContext } from "../context/Context";
 
 const MonthlyIncomeForm = () => {
@@ -15,6 +21,9 @@ const MonthlyIncomeForm = () => {
 
   const saveNewInfo = () => {
     updateMonthlyIncome(formData);
+    setFormData({
+      monthlyIncome: "",
+    });
   };
 
   return (
@@ -25,7 +34,7 @@ const MonthlyIncomeForm = () => {
             <TextField
               type="number"
               name="monthlyIncome"
-              label="Monthly Income"
+              label="Monthly Income*"
               fullWidth
               value={formData.monthlyIncome}
               onChange={handleFormDataChange}

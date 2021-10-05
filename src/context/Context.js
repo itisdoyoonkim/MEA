@@ -9,7 +9,9 @@ const reducer = (state, action) => {
 
       return { ...state, monthlyExpenses };
     case "GET_MONTHLY_INCOME":
-      const monthlyIncome = JSON.parse(localStorage.getItem("monthlyIncome"));
+      const monthlyIncome = Math.abs(
+        Number(JSON.parse(localStorage.getItem("monthlyIncome")))
+      );
 
       return { ...state, monthlyIncome };
     case "ADD_EXPENSE":
@@ -34,9 +36,12 @@ const reducer = (state, action) => {
 
       return { ...state, monthlyExpenses: newMonthlyExpenses };
     case "UPDATE_MONTHLY_INCOME":
-      localStorage.setItem("monthlyIncome", JSON.stringify(action.payload));
+      localStorage.setItem(
+        "monthlyIncome",
+        JSON.stringify(Number(action.payload))
+      );
 
-      return { ...state, monthlyIncome: action.payload };
+      return { ...state, monthlyIncome: Math.abs(Number(action.payload)) };
     default:
       return state;
   }

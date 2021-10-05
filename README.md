@@ -4,6 +4,6 @@ Everyone needs to have an understanding of how much they are able to save on a m
 
 # How to test it out
 
-Go to: https://github.com/itisdoyoonkim
+Visit: https://frosty-mclean-f3c587.netlify.app/
 
 Alternatively, clone this repo.
